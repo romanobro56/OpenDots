@@ -1,0 +1,27 @@
+        ***********************************
+        *  Polices Manuscrites TRUE-TYPE  *
+        ***********************************
+
+Ces polices True-Type sont "FREEWARE", donc gratuites et libres
+de droits pour une utilisation privée et NON COMMERCIALES.
+
+Il faudra cependant, ni les modifier, ni changer leur noms.
+Vous pouvez les distribuer, à qui vous voudrez, dans la mesure où
+le présent fichier " LISEZMOI.TXT " les accompagnent.
+
+Pour réaliser ces polices, j'ai utilisé un logiciel d'édition de
+fontes TRUE-TYPE acheté aux USA, et donc, JE DISPOSE DE LA LICENCE
+D'UTILISATION.
+
+Pour utiliser ces polices manuscrites sous Windows (c), placez
+tout simplement les fichiers xxxxx.ttf dans votre répertoire:
+                        c:/windows/fonts/
+C'est tout !
+
+Philippe BLONDEL
+
+Email : philing@hotmail.fr 
+URL   : http://philing.net
+
+                     Votre Police Manuscrite True-Type....  
+              Le Meilleur Moyen D' HUMANISER votre Ordinateur !..
