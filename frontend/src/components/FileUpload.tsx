@@ -41,10 +41,10 @@ export default function FileUpload({
         if (file) handleFile(file);
       }}
       onClick={() => inputRef.current?.click()}
-      className={`flex cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed p-10 transition-all ${
+      className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10 transition-all ${
         dragOver
-          ? "border-gold bg-gold/10"
-          : "border-navy/20 hover:border-gold/60 bg-white"
+          ? "border-coral bg-coral/5"
+          : "border-[#D0D3D8] hover:border-coral/50 bg-white"
       }`}
     >
       <input
@@ -61,20 +61,20 @@ export default function FileUpload({
       {uploading ? (
         <div className="flex gap-2">
           {[0,1,2].map(i => (
-            <div key={i} className="w-3 h-3 rounded-full bg-gold animate-glow-pulse" style={{ animationDelay: `${i*200}ms` }} />
+            <div key={i} className="w-3 h-3 rounded-full bg-coral animate-glow-pulse" style={{ animationDelay: `${i*200}ms` }} />
           ))}
         </div>
       ) : fileName ? (
-        <p className="text-sm text-muted-foreground">
-          Uploaded: <span className="font-bold text-navy">{fileName}</span> — click or
+        <p className="text-[14px] text-muted-foreground">
+          Uploaded: <span className="font-semibold text-navy">{fileName}</span> — click or
           drop to replace
         </p>
       ) : (
         <>
-          <p className="text-sm font-bold text-navy">
+          <p className="text-[14px] font-semibold text-navy">
             Drop an image here or click to browse
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-1 text-[12px] text-muted-foreground">
             PNG, JPEG, HEIC, WebP, GIF
           </p>
         </>

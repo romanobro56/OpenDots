@@ -40,9 +40,9 @@ export default function DotGrid({ grid, animate = false, size = "md" }: DotGridP
               width: dotSize,
               height: dotSize,
               backgroundColor: val
-                ? revealed ? "#E8A838" : "rgba(232, 168, 56, 0.15)"
-                : "rgba(232, 168, 56, 0.1)",
-              boxShadow: val && revealed ? "0 0 8px 2px rgba(232, 168, 56, 0.4)" : "none",
+                ? revealed ? "#0866FF" : "rgba(8, 102, 255, 0.15)"
+                : "rgba(8, 102, 255, 0.08)",
+              boxShadow: val && revealed ? "0 0 8px 2px rgba(8, 102, 255, 0.35)" : "none",
               transform: val && revealed ? "scale(1)" : "scale(0.7)",
               transitionDelay: animate ? `${(r * row.length + c) * 15}ms` : "0ms",
             }}

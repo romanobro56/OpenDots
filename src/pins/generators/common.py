@@ -4,8 +4,8 @@ import os
 
 from PIL import Image, ImageDraw, ImageFont
 
-IMG_WIDTH = 800
-IMG_HEIGHT = 1200
+IMG_WIDTH = 1200
+IMG_HEIGHT = 800
 PADDING = 40
 
 

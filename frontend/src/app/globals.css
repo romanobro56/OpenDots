@@ -1,52 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Merriweather:ital,wght@0,400;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;1,400&display=swap');
 @import "tailwindcss";
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --color-navy: #2B2D49;
-  --color-coral: #FF6B6B;
-  --color-gold: #E8A838;
-  --color-cream: #F5F0E1;
-  --color-teal: #3DAE9B;
+  --color-navy: #1C2B33;
+  --color-coral: #0866FF;
+  --color-gold: #F5A623;
+  --color-cream: #FFFFFF;
+  --color-teal: #1B74E4;
 
-  --color-muted: #EDE8D8;
-  --color-muted-foreground: #6B6680;
+  --color-muted: #F0F2F5;
+  --color-muted-foreground: #65676B;
 
-  --font-display: 'Nunito', sans-serif;
+  --font-display: 'Inter', sans-serif;
   --font-serif: 'Merriweather', serif;
-  --font-sans: var(--font-geist-sans);
+  --font-sans: 'Inter', var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
 :root {
-  --background: #F5F0E1;
-  --foreground: #2B2D49;
+  --background: #FFFFFF;
+  --foreground: #1C2B33;
 }
 
 * {
-  border-color: #EDE8D8;
+  border-color: #E4E6EB;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Nunito', Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 /* Dot grid background patterns */
 .dot-grid-bg {
-  background-image: radial-gradient(circle, rgba(232, 168, 56, 0.15) 2px, transparent 2px);
+  background-image: radial-gradient(circle, rgba(8, 102, 255, 0.12) 2px, transparent 2px);
   background-size: 24px 24px;
 }
 
 .dot-grid-bg-subtle {
-  background-image: radial-gradient(circle, rgba(232, 168, 56, 0.08) 2px, transparent 2px);
+  background-image: radial-gradient(circle, rgba(8, 102, 255, 0.05) 2px, transparent 2px);
   background-size: 32px 32px;
 }
 
@@ -58,4 +61,20 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-glow-pulse {
   animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+/* Meta-style link underline on hover */
+.meta-link {
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.meta-link:hover {
+  text-decoration: underline;
+  text-underline-position: under;
+  text-decoration-thickness: 1px;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
 }

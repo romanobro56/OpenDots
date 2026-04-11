@@ -28,17 +28,17 @@ export default function HowItWorks() {
   const { ref, isVisible } = useScrollReveal();
 
   return (
-    <section ref={ref} id="how-it-works" className="bg-muted py-24 lg:py-32">
-      <div className="container mx-auto px-6">
+    <section ref={ref} id="how-it-works" className="bg-white py-24 lg:py-32">
+      <div className="max-w-[1220px] mx-auto px-6">
         <h2
-          className={`font-black text-3xl sm:text-4xl lg:text-5xl text-navy text-center mb-20 transition-all duration-700 ${
+          className={`font-extrabold text-[32px] sm:text-[40px] lg:text-[48px] tracking-tight text-navy text-center mb-20 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          How it <span className="text-gold">works</span>
+          How it <span className="text-coral">works</span>
         </h2>
 
-        <div className="grid md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-[48px] max-w-4xl mx-auto">
           {steps.map((s, i) => (
             <div
               key={i}
@@ -47,14 +47,14 @@ export default function HowItWorks() {
               }`}
               style={{ transitionDelay: `${i * 200}ms` }}
             >
-              <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-navy mb-6">
-                <s.icon className="w-9 h-9 text-gold" strokeWidth={1.5} />
-                <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-coral flex items-center justify-center font-black text-sm text-white">
+              <div className="relative inline-flex items-center justify-center w-[72px] h-[72px] rounded-2xl bg-coral/8 mb-6">
+                <s.icon className="w-8 h-8 text-coral" strokeWidth={1.5} />
+                <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-coral flex items-center justify-center font-bold text-[13px] text-white">
                   {s.step}
                 </span>
               </div>
-              <h3 className="font-extrabold text-xl text-navy mb-3">{s.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{s.description}</p>
+              <h3 className="font-bold text-[18px] text-navy mb-3">{s.title}</h3>
+              <p className="text-muted-foreground text-[15px] leading-relaxed">{s.description}</p>
             </div>
           ))}
         </div>
@@ -62,10 +62,10 @@ export default function HowItWorks() {
         {/* Connector lines (desktop) */}
         <div className="hidden md:flex justify-center mt-[-180px] mb-[100px] max-w-4xl mx-auto pointer-events-none">
           <div className="flex-1 flex items-center justify-center">
-            <div className="w-full h-0.5 bg-gold/30" />
+            <div className="w-full h-[2px] bg-coral/15" />
           </div>
           <div className="flex-1 flex items-center justify-center">
-            <div className="w-full h-0.5 bg-gold/30" />
+            <div className="w-full h-[2px] bg-coral/15" />
           </div>
         </div>
       </div>

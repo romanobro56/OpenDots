@@ -25,8 +25,8 @@ export default function CrisisStats() {
 
   return (
     <section ref={ref} className="bg-navy py-24 lg:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 dot-grid-bg opacity-30" />
-      <div className="container relative z-10 mx-auto px-6">
+      <div className="absolute inset-0 dot-grid-bg opacity-20" />
+      <div className="max-w-[1220px] relative z-10 mx-auto px-6">
         <div className="space-y-20 lg:space-y-28">
           {stats.map((stat, i) => (
             <div
@@ -36,13 +36,13 @@ export default function CrisisStats() {
               }`}
               style={{ transitionDelay: `${i * 300}ms` }}
             >
-              <p className="font-black text-6xl sm:text-7xl lg:text-8xl text-gold mb-4">
+              <p className="font-extrabold text-[64px] sm:text-[80px] lg:text-[96px] leading-none text-coral mb-4">
                 {stat.number}
               </p>
-              <p className="font-bold text-xl sm:text-2xl text-cream/90 mb-4">
+              <p className="font-semibold text-xl sm:text-2xl text-white/90 mb-4 leading-relaxed">
                 {stat.text}
               </p>
-              <p className="text-cream/60 text-lg max-w-xl mx-auto">
+              <p className="text-white/50 text-[17px] max-w-xl mx-auto leading-relaxed">
                 {stat.context}
               </p>
             </div>
@@ -54,7 +54,7 @@ export default function CrisisStats() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <p className="font-extrabold text-2xl sm:text-3xl text-gold">
+          <p className="font-bold text-2xl sm:text-3xl text-white">
             OpenDots was built to change all three of these numbers.
           </p>
         </div>

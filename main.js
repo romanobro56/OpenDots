@@ -45,8 +45,9 @@ const TEST_FRAMES = [blank, letterA, allUp, blank];
 // Row-major: index = row * COLS + col
 
 function plungerName(index) {
-  if (index === 0) return 'plunger';
-  return `plunger.${String(index).padStart(3, '0')}`;
+  // Blender names: plunger.001 (index 0) through plunger.096 (index 95)
+  // Solenoid v8:N wrapper contains plunger.00N where N = index+1
+  return `plunger.${String(index + 1).padStart(3, '0')}`;
 }
 
 // ── Visual profiles ────────────────────────────────────────────────────────────
