@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Merriweather:ital,wght@0,400;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 38 88% 96%;
+    --foreground: 240 27% 14%;
+
+    --card: 38 88% 96%;
+    --card-foreground: 240 27% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 27% 14%;
+
+    --primary: 240 27% 14%;
+    --primary-foreground: 38 88% 96%;
+
+    --secondary: 174 63% 47%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 38 40% 90%;
+    --muted-foreground: 240 10% 40%;
+
+    --accent: 39 90% 58%;
+    --accent-foreground: 240 27% 14%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 38 30% 85%;
+    --input: 38 30% 85%;
+    --ring: 39 90% 58%;
+
+    --radius: 1rem;
+
+    --coral: 0 100% 71%;
+    --navy: 240 27% 14%;
+    --gold: 39 90% 58%;
+    --cream: 38 88% 96%;
+    --teal: 174 63% 47%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Nunito', sans-serif;
+  }
+}
+
+@layer components {
+  .dot-grid-bg {
+    background-image: radial-gradient(circle, hsl(var(--gold) / 0.15) 2px, transparent 2px);
+    background-size: 24px 24px;
+  }
+
+  .dot-grid-bg-subtle {
+    background-image: radial-gradient(circle, hsl(var(--gold) / 0.08) 2px, transparent 2px);
+    background-size: 32px 32px;
+  }
+}
+
+@layer utilities {
+  .text-gold {
+    color: hsl(var(--gold));
+  }
+
+  .bg-navy {
+    background-color: hsl(var(--navy));
+  }
+
+  .bg-cream {
+    background-color: hsl(var(--cream));
+  }
+
+  .text-navy {
+    color: hsl(var(--navy));
+  }
+
+  .bg-gold {
+    background-color: hsl(var(--gold));
+  }
+
+  .text-coral {
+    color: hsl(var(--coral));
+  }
+
+  .bg-coral {
+    background-color: hsl(var(--coral));
+  }
+
+  .text-teal {
+    color: hsl(var(--teal));
+  }
+
+  .bg-teal {
+    background-color: hsl(var(--teal));
+  }
+}
