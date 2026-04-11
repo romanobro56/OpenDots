@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLENOID DISPLAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:         #a0e060;
+      --green-dim:     #4a7a20;
+      --green-dark:    #1c3010;
+      --green-glow:    rgba(160, 224, 96, 0.18);
+      --bg:            #0a0b09;
+      --surface:       rgba(14, 18, 10, 0.82);
+      --border:        rgba(160, 224, 96, 0.14);
+      --border-bright: rgba(160, 224, 96, 0.45);
+      --text-dim:      #3a4232;
+      --text-mid:      #7a8a68;
+      --font-mono:     'DM Mono', monospace;
+      --font-display:  'Syne', sans-serif;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.55;
+    }
+
+    /* Scanlines */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.055) 2px,
+        rgba(0,0,0,0.055) 4px
+      );
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    #canvas-container {
+      position: fixed; inset: 0;
+      z-index: 1;
+    }
+
+    /* ── Corner brackets ── */
+    .corner {
+      position: fixed;
+      width: 30px; height: 30px;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0;
+      animation: hud-in 0.6s ease forwards;
+    }
+    .corner::before, .corner::after {
+      content: '';
+      position: absolute;
+      background: var(--green-dim);
+    }
+    .corner::before { width: 100%; height: 1px; top: 0; left: 0; }
+    .corner::after  { width: 1px; height: 100%; top: 0; left: 0; }
+    .corner-tl { top: 16px;    left: 16px;  animation-delay: 0.05s; }
+    .corner-tr { top: 16px;    right: 16px; transform: scaleX(-1); animation-delay: 0.08s; }
+    .corner-bl { bottom: 16px; left: 16px;  transform: scaleY(-1); animation-delay: 0.11s; }
+    .corner-br { bottom: 16px; right: 16px; transform: scale(-1);  animation-delay: 0.14s; }
+
+    /* ── Top-left: title + status ── */
+    #panel-tl {
+      position: fixed;
+      top: 26px; left: 26px;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0;
+      animation: hud-in 0.7s ease 0.1s forwards;
+    }
+
+    #title {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    #title span { opacity: 0.38; font-weight: 400; }
+
+    #status-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #status-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+      animation: pulse-dot 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 5px var(--green); }
+      50%       { opacity: 0.25; box-shadow: none; }
+    }
+    #status {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--green);
+    }
+
+    /* ── Top-right: active key ── */
+    #panel-tr {
+      position: fixed;
+      top: 24px; right: 26px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      pointer-events: none;
+      opacity: 0;
+      animation: hud-in 0.7s ease 0.18s forwards;
+    }
+    #key-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    #key-display {
+      width: 66px; height: 66px;
+      border: 1px solid var(--border-bright);
+      border-radius: 8px;
+      background: var(--surface);
+      backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--green);
+      position: relative;
+      overflow: hidden;
+    }
+    #key-display::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 45%;
+      background: linear-gradient(180deg, rgba(160,224,96,0.07) 0%, transparent 100%);
+    }
+    #key-display::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 18%; right: 18%;
+      height: 1px;
+      background: var(--green);
+      opacity: 0.45;
+      filter: blur(0.5px);
+    }
+    @keyframes keypop {
+      0%   { transform: scale(1.18); opacity: 0.5; }
+      60%  { transform: scale(0.97); }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+
+    /* ── Bottom-left: matrix readout ── */
+    #matrix-readout {
+      position: fixed;
+      left: 26px; bottom: 108px;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0;
+      animation: hud-in 0.7s ease 0.35s forwards;
+    }
+    #matrix-label {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    #matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 7px);
+      grid-template-rows:    repeat(8,  7px);
+      gap: 2px;
+    }
+    .mdot {
+      width: 7px; height: 7px;
+      border-radius: 1px;
+      background: var(--text-dim);
+      transition: background 0.16s, box-shadow 0.16s;
+    }
+    .mdot.on {
+      background: var(--green);
+      box-shadow: 0 0 4px rgba(160,224,96,0.65);
+    }
+
+    /* ── Right side: instructions ── */
+    #instructions {
+      position: fixed;
+      right: 26px; bottom: 120px;
+      z-index: 20;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      opacity: 0;
+      animation: hud-in 0.7s ease 0.28s forwards;
+    }
+    .instr-line {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .instr-key {
+      display: inline-block;
+      border: 1px solid var(--text-dim);
+      border-radius: 3px;
+      padding: 1px 6px;
+      font-size: 8px;
+      line-height: 1.7;
+      letter-spacing: 0.07em;
+      color: var(--text-mid);
+    }
+
+    /* ── Bottom: visual profiles ── */
+    #profiles {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 20px;
+      opacity: 0;
+      animation: hud-in 0.7s ease 0.25s forwards;
+    }
+    #profiles::before {
+      content: '';
+      display: block;
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--border) 18%,
+        var(--border-bright) 50%,
+        var(--border) 82%,
+        transparent 100%
+      );
+      margin-bottom: 13px;
+    }
+    #profiles-label {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 9px;
+    }
+    #profiles-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      padding: 0 64px;
+    }
+    .profile-btn {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      padding: 5px 14px;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: background 0.14s, color 0.14s, border-color 0.14s, box-shadow 0.14s;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--green-glow);
+      opacity: 0;
+      transition: opacity 0.14s;
+    }
+    .profile-btn:hover { border-color: var(--green-dim); color: var(--green); }
+    .profile-btn:hover::before { opacity: 1; }
+    .profile-btn.active {
+      border-color: var(--green-dim);
+      color: var(--green);
+      box-shadow: 0 0 10px rgba(160,224,96,0.12), inset 0 0 8px rgba(160,224,96,0.05);
+    }
+    .profile-btn.active::before { opacity: 1; }
+
+    .profile-btn.active[data-profile="cortical"]  { color:#fff;    border-color:#666;   box-shadow:0 0 10px rgba(255,255,255,0.12); }
+    .profile-btn.active[data-profile="snow"]       { color:#ffff00; border-color:#999900;box-shadow:0 0 10px rgba(255,255,0,0.14); }
+    .profile-btn.active[data-profile="deutan"]     { color:#4af;    border-color:#06c;   box-shadow:0 0 10px rgba(0,136,255,0.14); }
+    .profile-btn.active[data-profile="protan"]     { color:#0cf;    border-color:#09c;   box-shadow:0 0 10px rgba(0,204,255,0.14); }
+    .profile-btn.active[data-profile="tritan"]     { color:#f73;    border-color:#c40;   box-shadow:0 0 10px rgba(255,68,0,0.14); }
+    .profile-btn.active[data-profile="nearfar"]    { color:#fe0;    border-color:#ba0;   box-shadow:0 0 10px rgba(255,238,0,0.14); }
+    .profile-btn.active[data-profile="grayscale"]  { color:#ccc;    border-color:#666;   box-shadow:0 0 10px rgba(200,200,200,0.1); }
+
+    /* ── Shared fade-in ── */
+    @keyframes hud-in {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="canvas-container"></div>
+
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <div id="panel-tl">
+    <div id="title">Solenoid Display <span>/ v1.0</span></div>
+    <div id="status-line">
+      <div id="status-dot"></div>
+      <div id="status">starting…</div>
+    </div>
+  </div>
+
+  <div id="panel-tr">
+    <div id="key-label">Active Key</div>
+    <div id="key-display">—</div>
+  </div>
+
+  <div id="matrix-readout">
+    <div id="matrix-label">Pin State</div>
+    <div id="matrix-grid"></div>
+  </div>
+
+  <div id="instructions">
+    <div class="instr-line"><span>Orbit</span><span class="instr-key">Drag</span></div>
+    <div class="instr-line"><span>Zoom</span><span class="instr-key">Scroll</span></div>
+    <div class="instr-line"><span>Front view</span><span class="instr-key">NUM 1</span></div>
+  </div>
+
+  <div id="profiles">
+    <div id="profiles-label">Visual Profile</div>
+    <div id="profiles-row">
+      <button class="profile-btn active" data-profile="default"   onclick="applyProfile('default')">Default</button>
+      <button class="profile-btn"        data-profile="cortical"  onclick="applyProfile('cortical')">Cortical</button>
+      <button class="profile-btn"        data-profile="snow"      onclick="applyProfile('snow')">Visual Snow</button>
+      <button class="profile-btn"        data-profile="deutan"    onclick="applyProfile('deutan')">Deuteranopia</button>
+      <button class="profile-btn"        data-profile="protan"    onclick="applyProfile('protan')">Protanopia</button>
+      <button class="profile-btn"        data-profile="tritan"    onclick="applyProfile('tritan')">Tritanopia</button>
+      <button class="profile-btn"        data-profile="nearfar"   onclick="applyProfile('nearfar')">Near / Far</button>
+      <button class="profile-btn"        data-profile="grayscale" onclick="applyProfile('grayscale')">Grayscale</button>
+    </div>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three":         "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="main.js"></script>
+
+  <script>
+    // Build the 8×12 dot grid for the mini matrix readout
+    const grid = document.getElementById('matrix-grid');
+    const dots = [];
+    for (let i = 0; i < 96; i++) {
+      const d = document.createElement('div');
+      d.className = 'mdot';
+      grid.appendChild(d);
+      dots.push(d);
+    }
+    // main.js calls this whenever targetMatrix updates
+    window.updateMatrixReadout = function(matrix) {
+      for (let i = 0; i < 96; i++) {
+        dots[i].classList.toggle('on', matrix[i] > 0.5);
+      }
+    };
+  </script>
+</body>
+</html>
