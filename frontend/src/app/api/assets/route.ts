@@ -47,7 +47,7 @@ function categorize(files: string[]): Record<string, AssetGroup> {
 
 export async function GET() {
   const lettersDir = join(PROJECT_ROOT, "output", "letters");
-  const samplesDir = join(PROJECT_ROOT, "assets", "samples");
+  const samplesDir = join(PROJECT_ROOT, "tmp");
 
   const result: Record<string, AssetGroup> = {};
 

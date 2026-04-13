@@ -26,7 +26,10 @@ export default function UploadPage() {
     }
 
     if (data.matrix) {
-      setMatrix(data.matrix);
+      const parsed = typeof data.matrix === "string"
+        ? data.matrix.trim().split("\n").map((line: string) => line.trim().split(/\s+/).map(Number))
+        : data.matrix;
+      setMatrix(parsed);
     } else {
       alert("Processing complete — check your terminal for output.");
     }

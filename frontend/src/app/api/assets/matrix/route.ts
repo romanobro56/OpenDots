@@ -9,7 +9,7 @@ const PROJECT_ROOT = join(process.cwd(), "..");
 
 const COLLECTION_DIRS: Record<string, string> = {
   letters: join(PROJECT_ROOT, "output", "letters"),
-  samples: join(PROJECT_ROOT, "assets", "samples"),
+  samples: join(PROJECT_ROOT, "tmp"),
 };
 
 function parseMatrix(stdout: string): number[][] {

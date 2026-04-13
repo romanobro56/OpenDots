@@ -12,7 +12,7 @@ const LERP_SPEED = 8.0;
 const ROWS = 8;
 const COLS = 12;
 const TOTAL = ROWS * COLS;
-const MODEL_SCALE = 1432;
+const MODEL_SCALE = 2000;
 const GLB_PATH = "/solenoid_grid.glb";
 
 // ── Visual profiles ──────────────────────────────────────────────────────────
