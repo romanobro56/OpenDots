@@ -4,6 +4,8 @@
 
 > *Every picture tells a story. Now every child can feel it.*
 
+<video src="demo_assets/model_demo_video.mp4" autoplay muted loop playsinline width="100%"></video>
+
 ---
 
 ## The Problem
@@ -19,6 +21,10 @@ OpenDots takes any photograph, drawing, or symbol and converts it into an 8x12 b
 - **Interactive 3D visualization** — Real-time Three.js simulation of the physical pin board with smooth LERP animations
 - **9 accessibility profiles** — Material presets for cortical visual impairment, visual snow syndrome, deuteranopia, protanopia, tritanopia, and more
 - **Pre-built character libraries** — Latin alphabet, numerals, symbols, and Grade 1 braille, all rendered at tactile resolution
+
+<p align="center">
+  <img src="demo_assets/site_landing.png" alt="OpenDots landing page" width="80%">
+</p>
 
 ## Architecture
 
@@ -64,7 +70,15 @@ OpenDots takes any photograph, drawing, or symbol and converts it into an 8x12 b
 
 **Two-Stage AI Simplification** — Rather than directly converting complex images, the pipeline first asks Gemini to identify the subject, then generates a purpose-built ultra-simplified icon with only pure black and white pixels — no gradients, no anti-aliasing. This produces dramatically cleaner binary matrices.
 
+<p align="center">
+  <img src="demo_assets/AI_upload_page.png" alt="AI-powered image upload and simplification" width="80%">
+</p>
+
 **Real-Time 3D Simulation** — The Three.js viewer loads a GLB model of 96 individually addressable solenoid plungers. Pin heights animate via linear interpolation at configurable speed, with dynamic emissive glow intensity tied to average matrix activation. Nine material profiles swap colors, roughness, and metalness in real-time to simulate how the board appears under different visual conditions.
+
+<p align="center">
+  <img src="demo_assets/model_page.png" alt="Interactive 3D pin board visualization" width="80%">
+</p>
 
 **Accessibility-First Profiles** — Each visual profile is tuned to a specific condition: high-contrast white-on-black for cortical visual impairment, yellow emissive for visual snow syndrome, colorblind-safe palettes for deuteranopia/protanopia/tritanopia, and high-contrast variants for near/far sightedness.
 
