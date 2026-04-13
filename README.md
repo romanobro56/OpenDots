@@ -4,7 +4,10 @@
 
 > *Every picture tells a story. Now every child can feel it.*
 
-<video src="demo_assets/model_demo_video.mp4" autoplay muted loop playsinline width="100%"></video>
+
+https://github.com/user-attachments/assets/d2a2d3b1-02c1-44f5-8e64-921d03617bcc
+
+
 
 ---
 
